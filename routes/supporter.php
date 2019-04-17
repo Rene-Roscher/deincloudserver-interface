@@ -11,12 +11,6 @@
 |
 */
 
-use Illuminate\Support\Facades\Route;
-
 Route::get('/', function () {
-    return "TEST";
+    return dd(app()->getLocale());
 });
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
