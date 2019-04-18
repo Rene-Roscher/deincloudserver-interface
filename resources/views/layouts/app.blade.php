@@ -289,7 +289,7 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li><a href="contact.html">Contact</a></li>
+                                <li><a href="contact.html">Kontakt</a></li>
                             </ul>
                         </div>                    <!-- menu list end -->
                     </nav>
@@ -324,8 +324,8 @@
                     <h1 class="banner-title wow fadeInLeft">DeinCloudServer</h1>
                     <p class="banner-sub-title wow fadeInUp" data-wow-duration="1.5s">  - <span id="subtitle"></span></p>
                     <div class="xs-btn-wraper wow fadeInUp" data-wow-duration="1.7s">
-                        <a href="{{ url('/blog') }}" class="btn btn-outline-primary">Blog</a>
-                        <a href="{{ url('/login') }}" class="btn btn-primary">Noch nicht regestriert?</a>
+{{--                        <a href="{{ url('/blog') }}" class="btn btn-outline-primary">Blog</a>--}}
+{{--                        <a href="{{ url('/login') }}" class="btn btn-primary">Noch nicht regestriert?</a>--}}
                     </div>
                 </div><!-- .xs-banner-content END -->
             </div>
