@@ -59,10 +59,7 @@
                 <div class="col-md-6">
                     <ul class="xs-top-bar-info">
                         <li>
-                            <a href="mailto:info@deincloudserver.de" target="_blank"><i class="icon icon-envelope1"></i>info@domain.com</a>
-                        </li>
-                        <li>
-                            <a href="ts3server://ts.deincloudserver.de" target="_blank"><i class="fa fa-"></i>TeamSpeak Support</a>
+                            <a href="mailto:info@deincloudserver.de" target="_blank"><i class="icon icon-envelope1"></i>info@deincloudserver.de</a>
                         </li>
                     </ul>
                 </div>
