@@ -21,31 +21,37 @@
         </div>
     </div>
 
-    <section class="xs-section-padding">
+    @php($oauth = $data['oauth'])
+
+    <section class="xs-section-padding" id="registrationDiv">
         <div class="container">
             <div class="row">
                 <div class="col-md-8 mx-auto">
                     <div class="xs-heading wow fadeIn">
-                        <h2 class="heading-sub-title">Regestriere dich mit deinen Daten.</h2>
-                        <h3 class="heading-title">Benutzer <span>registrieren</span></h3>
+                        <h3 class="heading-title">
+                            <span>Hey, <span>{{ isset($oauth->nickname) ? $oauth->nickname : $oauth->name }}</span></span>
+                        </h3>
+                        <h2 class="heading-sub-title">Bitte vervollständige deine Anmeldeinfornationen.</h2>
                     </div>
                 </div>
             </div>
-            <form action="{{ route('register') }}" method="post" class="xs-form">
+            <form action="{{ route('oauth.registration.setdata') }}" id="registrationData" method="post" class="xs-form">
                 @csrf
-
+                @method('PUT')
                 <ul class="nav nav-tabs main-nav-tab tab-swipe" role="tablist">
                     <li>
                         <a id="monthly-tab" class="@if(old('account_type', 'PRIVATE') == 'PRIVATE') isActive active show @endif" data-toggle="tab" href="#private" onclick="$('#account_type').attr('value', 'PRIVATE');">Privat</a>
                     </li>
                     <li>
-                        <a id="yearly-tab" class="@if(old('account_type', 'PRIVATE') == 'COMPANY') isActive active show @endif" data-toggle="tab" href="#company" onclick="$('#account_type').attr('value', 'COMPANY');" class="">Business</a>
+                        <a id="yearly-tab" class="@if(old('account_type', 'PRIVATE') == 'COMPANY') isActive active show @endif" data-toggle="tab" href="#company" onclick="$('#account_type').attr('value', 'COMPANY');">Business</a>
                     </li>
                     <li class="indicator" style="left: 5px; width: 125px;"></li>
                 </ul>
 
                 <div class="row">
                     <div class="col-md-12 mx-auto">
+
+                        <input name="authorize_type" value="{{ $data['authorize_type'] }}" readonly hidden>
 
                         <input name="account_type" id="account_type" value="{{ old('account_type', 'PRIVATE') }}" hidden>
 
@@ -57,15 +63,15 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             @error('company_name'){{ $message }}@enderror
-                                            <input type="text" class="form-control" name="company_name" placeholder="Firmenname" value="{{ old('company_name') }}" required>
+                                            <input type="text" class="form-control" name="company_name" placeholder="Firmenname" value="{{ old('company_name') }}">
                                         </div>
                                         <div class="col-md-4">
                                             @error('company_contact'){{ $message }}@enderror
-                                            <input type="text" class="form-control" name="company_contact" placeholder="Kontaktperson" value="{{ old('company_contact') }}" required>
+                                            <input type="text" class="form-control" name="company_contact" placeholder="Kontaktperson" value="{{ old('company_contact') }}">
                                         </div>
                                         <div class="col-md-4">
                                             @error('company_ustid'){{ $message }}@enderror
-                                            <input type="text" class="form-control" name="company_ustid" placeholder="UstId" value="{{ old('company_ustid') }}" required>
+                                            <input type="text" class="form-control" name="company_ustid" placeholder="UstId" value="{{ old('company_ustid') }}">
                                         </div>
                                     </div>
                                 </div>
@@ -81,18 +87,18 @@
                                 </div>
                                 <div class="col-md-5">
                                     @error('first_name'){{ $message }}@enderror
-                                    <input type="text" class="form-control" name="first_name" placeholder="Vorname" value="{{ old('first_name') }}" required>
+                                    <input type="text" class="form-control" name="first_name" placeholder="Vorname" value="{{ old('first_name', $oauth['name']['givenName']) }}" required>
                                 </div>
                                 <div class="col-md-5">
                                     @error('last_name'){{ $message }}@enderror
-                                    <input type="text" class="form-control" name="last_name" placeholder="Nachname" value="{{ old('last_name') }}" required>
+                                    <input type="text" class="form-control" name="last_name" placeholder="Nachname" value="{{ old('last_name', $oauth['name']['familyName']) }}" required>
                                 </div>
                             </div>
                             <br>
                             <div class="row">
                                 <div class="col-md-4">
                                     @error('email'){{ $message }}@enderror
-                                    <input type="email" class="form-control" name="email" placeholder="E-Mail" value="{{ old('email') }}" required>
+                                    <input type="email" class="form-control" name="email" placeholder="E-Mail" value="{{ old('email', $oauth->email) }}" readonly required>
                                 </div>
                                 <div class="col-md-4">
                                     @error('birthday'){{ $message }}@enderror
@@ -101,17 +107,6 @@
                                 <div class="col-md-4">
                                     @error('phone_number'){{ $message }}@enderror
                                     <input type="tel" class="form-control" name="phone_number" placeholder="Handynummer (+490000000000)" value="{{ old('phone_number') }}" required>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    @error('password'){{ $message }}@enderror
-                                    <input type="password" class="form-control" name="password" placeholder="Passwort" value="{{ old('password') }}" required>
-                                </div>
-                                <div class="col-md-6">
-                                    @error('password_confirmation'){{ $message }}@enderror
-                                    <input type="password" class="form-control" name="password_confirmation" placeholder="Passwort wiederholen" value="{{ old('password_confirmation') }}" required>
                                 </div>
                             </div>
                             <br>
@@ -145,9 +140,9 @@
                                 </div>
                             </div>
                             <br>
-                            <div class="xs-btn-wraper">
-                                <input type="submit" class="btn btn-primary" value="Registrieren" autocomplete="off">
-                            </div>
+                                <div class="xs-btn-wraper">
+                                    <input type="submit" class="btn btn-primary" value="Registrierung abschließen" autocomplete="off">
+                                </div>
                             <p class="form-info">Bereits regestriert?  <a href="{{ route('login') }}">Anmelden</a></p>
                         </div>
                     </div>
@@ -155,28 +150,4 @@
             </form>
         </div>
     </section>
-    <style>
-        input[type="date"]::-webkit-clear-button {
-            display: none;
-        }
-
-        /* Removes the spin button */
-        input[type="date"]::-webkit-inner-spin-button {
-            display: none;
-        }
-
-        /* A few custom styles for date inputs */
-        input[type="date"] {
-            appearance: none;
-            -webkit-appearance: none;
-            color: #95a5a6;
-            font-family: "Helvetica", arial, sans-serif;
-            font-size: 18px;
-            border:1px solid #ecf0f1;
-            background:#ecf0f1;
-            padding:5px;
-            display: inline-block !important;
-            visibility: visible !important;
-        }
-    </style>
 @endsection

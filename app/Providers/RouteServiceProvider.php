@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Routing\Events\RouteMatched;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -24,7 +25,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
+//        Blade::compiler()->directive('rene', function ($expression) {
+/*            return "<?php echo with({$expression})->format('F d, Y g:i a'); ?>";*/
+//        });
         parent::boot();
     }
 
@@ -36,6 +39,8 @@ class RouteServiceProvider extends ServiceProvider
     public function map()
     {
         $this->mapWebRoutes();
+
+        $this->mapOAuthRoutes();
 
         $this->mapCustomerRoutes();
 
@@ -56,6 +61,14 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware('web')
             ->namespace($this->namespace)
             ->group(base_path('routes/web.php'));
+    }
+
+    protected function mapOAuthRoutes()
+    {
+        Route::prefix('oauth')
+            ->middleware(['web', 'guest'])
+            ->namespace($this->namespace.'\Auth\oAuth')
+            ->group(base_path('routes/oauth.php'));
     }
 
     /**

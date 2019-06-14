@@ -1,82 +1,33 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
+namespace App\Http\Controllers\Auth\oAuth;
+
+
 use App\Http\Controllers\Controller;
-use Illuminate\Auth\Events\Registered;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Str;
 
-class RegisterController extends Controller
+class oAuthController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
 
-    use RegistersUsers;
-
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/customer';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function authorizeData(Request $request)
     {
-        $this->middleware('guest');
+        $validator = $this->validator($request->all());
+
+        if($validator->fails())
+            return dd($validator->errors());
+
+        $user = $this->create($request->all());
+
+        auth()->login($user);
+
+        return redirect('customer');
     }
 
-    /**
-     * Show the application registration form.
-     *
-     * @return Response
-     */
-    public function showRegistrationForm()
-    {
-        return view('auth.register');
-    }
-
-    /**
-     * Handle a registration request for the application.
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function register(Request $request)
-    {
-        $this->validator($request->all())->validate();
-
-        event(new Registered($user = $this->create($request->all())));
-
-        $this->guard()->login($user);
-
-        return $this->registered($request, $user)
-            ?: redirect($this->redirectPath());
-    }
-
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -92,11 +43,10 @@ class RegisterController extends Controller
             'region' => 'required|string',
             'country' => 'required|string',
             'phone_number' => 'required|string',
-            'password' => 'required|string|min:8|confirmed',
             'account_type' => 'required|in:PRIVATE,COMPANY',
-            'company_name' => 'string|max:255',
-            'company_contact' => 'string',
-            'company_ustid' => 'string',
+            'company_name' => 'nullable|string|max:255',
+            'company_contact' => 'nullable|string',
+            'company_ustid' => 'nullable|string',
         ]);
     }
 
@@ -121,11 +71,13 @@ class RegisterController extends Controller
             'region' => $data['region'],
             'country' => $data['country'],
             'phone_number' => $data['phone_number'],
-            'password' => Hash::make($data['password']),
+            'password' => Hash::make(Str::random(1024)),
             'account_type' => $data['account_type'],
             'company_name' => !isset($data['company_name']) ? null : $data['company_name'],
             'company_contact' => !isset($data['company_contact']) ? null : $data['company_contact'],
             'company_ustid' => !isset($data['company_name']) ? null : $data['company_name'],
+            'registered_with' => strtoupper($data['authorize_type']),
         ]);
     }
+
 }

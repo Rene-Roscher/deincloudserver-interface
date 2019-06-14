@@ -2,6 +2,12 @@
 
 return [
 
+    'debug_blacklist' => [
+        '_COOKIE' => array_keys($_COOKIE),
+        '_SERVER' => array_keys($_SERVER) ,
+        '_ENV' => array_keys($_ENV),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Password reset key expire
@@ -14,6 +20,12 @@ return [
     */
 
     'password_reset_key_expire' => 120,
+
+    /*
+     | Version of the Web-Interface
+     */
+
+    'version' => 'v0.0.1',
 
     /*
     |--------------------------------------------------------------------------
@@ -67,7 +79,7 @@ return [
 
     'url' => env('APP_URL', 'https://deincloudserver.de'),
 
-    'asset_url' => env('ASSET_URL', null),
+    'asset_url' => env('ASSET_URL', '/'),
 
     /*
     |--------------------------------------------------------------------------
@@ -187,6 +199,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        \SocialiteProviders\Manager\ServiceProvider::class,
     ],
 
     /*
