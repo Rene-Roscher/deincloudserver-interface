@@ -13,6 +13,7 @@ return [
     |
     */
 
+    'FAILED' => 'Fehleer',
     'accepted' => ':attribute muss akzeptiert werden.',
     'active_url' => ':attribute ist keine gültige Internet-Adresse.',
     'after' => ':attribute muss ein Datum nach dem :date sein.',

@@ -90,10 +90,10 @@
                             <p>Unsere Serversysteme stammen von Supermicro und den aktuellen besten Standards. Bei den CPUs setzten wir ganz auf die E5 & E3 Serie der <a href="https://www.intel.de/content/www/de/de/products/processors/xeon.html">Intel Xeon Prozessoren</a>.</p>
                             <h5 class="content-title">Kapazitäten eines Nodes</h5>
                             <ul class="xs-list check">
-                                <li> - CPU: 2x E5-2680v2 (40th | 3,6GHz)</li>
-                                <li> - Arbeitsspeicher: 256 GB (16x16) Samsung DDR3 ECC</li>
+                                <li> - CPU: 2x E5-2697v2 (48th | 3,5GHz)</li>
+                                <li> - Arbeitsspeicher: 256 GB (16x16) Hynix|Samsung DDR3 ECC</li>
                                 <li> - Speicher: 4x 1TB Samsung 860 EVO <b>(SSD | Raid 5)</b></li>
-                                <li> - Netzwerk: 2x 1GBit/s Uplink <b>(Redundanz)</b></li>
+                                <li> - Netzwerk: 2x 10GBit/s Uplink <b>(Redundanz)</b></li>
                             </ul>
                             <a href="{{ url('/server-hardware') }}" class="btn btn-primary">Mehr erfahren</a>
                         </div>
@@ -119,7 +119,7 @@
                             </div>
                             <div class="media-body">
                                 <h4 class="xs-title small">Anbindung</h4>
-                                <p>All unsere Nodes sind mit mindestens 2x 1 Gbit/s angebunden.</p>
+                                <p>All unsere Nodes sind mit mindestens 2x 10 Gbit/s angebunden.</p>
                             </div>
                         </div><!-- .hosting-info-list END -->
                         <div class="media hosting-info-list">

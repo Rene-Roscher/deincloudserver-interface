@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->decimal('money', 10, 2)->default(0.00);
             $table->string('password');
             /**/
-            $table->longText('roles')->default('{"CUSTOMER"}')->nullable();
+            $table->longText('roles')->default('["CUSTOMER"]')->nullable();
             $table->enum('registered_with', ['EMAIL', 'GOOGLE', 'TWITTER', 'GITHUB', 'GITLAB', 'FACEBOOK'])->default('EMAIL');
             $table->enum('state', ['PENDING', 'ACTIVATED', 'DEACTIVATED'])->default('PENDING');
             /**/
@@ -40,6 +40,8 @@ class CreateUsersTable extends Migration
             $table->longText('company_name')->nullable();
             $table->longText('company_contact')->nullable();
             $table->longText('company_ustid')->nullable();
+            /**/
+            $table->longText('notes')->nullable();
             /**/
             $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();

@@ -10,16 +10,29 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 
 class oAuthController extends Controller
 {
+
+    public function callback($provider)
+    {
+        $oauth = Socialite::driver($provider)->user();
+        $user = User::query()->where('email', $oauth->email)->first();
+        if($user && $user->exists()) {
+            auth()->login($user->first());
+            return redirect('customer');
+        }
+        return view('auth.oauth.oauth', ['data' => ['oauth' => $oauth, 'authorize_type' => strtoupper($provider)]]);
+    }
 
     public function authorizeData(Request $request)
     {
         $validator = $this->validator($request->all());
 
-        if($validator->fails())
-            return dd($validator->errors());
+        if($validator->fails()) {
+            return redirect(url('/register'))->withErrors($validator->failed());
+        }
 
         $user = $this->create($request->all());
 
@@ -42,11 +55,12 @@ class oAuthController extends Controller
             'city' => 'required|string',
             'region' => 'required|string',
             'country' => 'required|string',
-            'phone_number' => 'required|string',
+            'phone_number' => 'required|string|unique:users',
             'account_type' => 'required|in:PRIVATE,COMPANY',
             'company_name' => 'nullable|string|max:255',
             'company_contact' => 'nullable|string',
             'company_ustid' => 'nullable|string',
+            'authorize_type' => 'required|in:GOOGLE,TWITTER,GITHUB,FACEBOOK'
         ]);
     }
 

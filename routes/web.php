@@ -11,8 +11,11 @@
 |
 */
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use Illuminate\View\View;
 
 Auth::routes(['verify' => true]);
 
@@ -28,6 +31,21 @@ Route::get('/imprint', function () {
     return view('web.imprint');
 });
 
-Route::get('/data-center', function () {
+Route::get('/datacenter', function () {
     return view('web.data_center');
 });
+
+Route::get('/contact-us', function () {
+    return view('web.contact_us');
+});
+
+Route::post('/contact-us', function (Request $request) {
+
+    Mail::send('web.contact_us_data', ['request' => $request], function ($m) use ($request) {
+        $name = $request->get('name');
+        $m->from('no-reply@deincloudserver.de', $name .' - Kontaktformular');
+        $m->to('roscher794@gmail.com', $name)->subject('Kontaktformular');
+    });
+    return dd($request->all());
+})->name('contact_us.send');
+

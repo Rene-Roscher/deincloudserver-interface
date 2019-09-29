@@ -71,8 +71,18 @@
                 </div>
                 <div class="col-md-6">
                     <ul class="top-menu">
-                        <li><a href="{{ route('login') }}"><i class="icon icon-key2"></i> Anmelden</a></li>
-                        <li><a href="{{ route('register') }}"><i class="icon icon-users"></i> Registrieren</a></li>
+                        @auth
+                            <li>
+                                <a href="{{ route('customer.dashboard') }}"><i class="icon icon-key2"></i> {{ auth()->user()->first_name.' '.auth()->user()->last_name }}</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="$('#logout').submit();"><i class="icon icon-users"></i> Logout</a>
+                                <form id="logout" method="POST" action="{{ route('logout') }}">@csrf</form>
+                            </li>
+                        @else
+                            <li><a href="{{ route('login') }}"><i class="icon icon-key2"></i> Anmelden</a></li>
+                            <li><a href="{{ route('register') }}"><i class="icon icon-users"></i> Registrieren</a></li>
+                        @endauth
                     </ul>
                 </div>
             </div><!-- .row END -->
@@ -235,27 +245,13 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li>
-                                    <a href="#">News</a>
-                                    <ul class="nav-dropdown xs-icon-menu">
-                                        <li class="single-menu-item">
-                                            <a href="blog.html"><i class="icon icon-file-2"></i>Blog</a>
-                                        </li>
-                                        <li class="single-menu-item">
-                                            <a href="blog-2.html"><i class="icon icon-file-2"></i>Blog 2</a>
-                                        </li>
-                                        <li class="single-menu-item">
-                                            <a href="blog-single.html"><i class="icon icon-contract"></i>Blog single</a>
-                                        </li>
-                                    </ul>
-                                </li>
                                 <li><a href="contact.html">Kontakt</a></li>
                             </ul>
                         </div>                    <!-- menu list end -->
                     </nav>
                 </div>
                 <div class="col-lg-2">
-                    <ul class="xs-menu-tools">
+                    <ul class="xs-menu-tools xs-menus">
                         <li>
                             <a href="#modal-popup-1" class="languageSwitcher-button xs-modal-popup"><i class="icon icon-internet"></i></a>
                         </li>
@@ -264,9 +260,6 @@
                         </li>
                         <li>
                             <a href="#modal-popup-2" class="navsearch-button xs-modal-popup"><i class="icon icon-search"></i></a>
-                        </li>
-                        <li>
-                            <a href="#" class="navSidebar-button"><i class="icon icon-burger-menu"></i></a>
                         </li>
                     </ul>
                 </div>

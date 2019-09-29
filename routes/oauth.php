@@ -9,14 +9,7 @@ Route::prefix('{provider}')->where(['provider' => 'google|twitter|github|faceboo
     Route::get('/', function ($provider) {
         return Socialite::with($provider)->redirect();
     });
-    Route::get('callback', function ($provider) {
-        $oauth = Socialite::driver($provider)->user();
-        $data = [
-            'oauth' => $oauth,
-            'authorize_type' => strtoupper($provider)
-        ];
-        return view('auth.oauth.oauth', compact('data'));
-    });
+    Route::get('callback', 'oAuthController@callback')->name('oauth.callback');
 });
 
 Route::put('registration', 'oAuthController@authorizeData')->name('oauth.registration.setdata');

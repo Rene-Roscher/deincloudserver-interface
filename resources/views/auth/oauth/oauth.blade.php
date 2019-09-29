@@ -50,7 +50,6 @@
 
                 <div class="row">
                     <div class="col-md-12 mx-auto">
-
                         <input name="authorize_type" value="{{ $data['authorize_type'] }}" readonly hidden>
 
                         <input name="account_type" id="account_type" value="{{ old('account_type', 'PRIVATE') }}" hidden>
@@ -87,11 +86,11 @@
                                 </div>
                                 <div class="col-md-5">
                                     @error('first_name'){{ $message }}@enderror
-                                    <input type="text" class="form-control" name="first_name" placeholder="Vorname" value="{{ old('first_name', $oauth['name']['givenName']) }}" required>
+                                    <input type="text" class="form-control" name="first_name" placeholder="Vorname" value="{{ old('first_name', isset($oauth['name']['givenName']) ? $oauth['name']['givenName'] : null ) }}" required>
                                 </div>
                                 <div class="col-md-5">
                                     @error('last_name'){{ $message }}@enderror
-                                    <input type="text" class="form-control" name="last_name" placeholder="Nachname" value="{{ old('last_name', $oauth['name']['familyName']) }}" required>
+                                    <input type="text" class="form-control" name="last_name" placeholder="Nachname" value="{{ old('last_name', isset($oauth['name']['familyName']) ? $oauth['name']['familyName'] : null) }}" required>
                                 </div>
                             </div>
                             <br>
